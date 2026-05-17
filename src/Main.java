@@ -4,75 +4,105 @@ import structures.ProductTree;
 import structures.ProductNode;
 import structures.CustomerHashTable;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== SmartStore Warehouse Simulation ===");
-
-        // 1. Baum-Instanz erstellen
+        // 1. Initialize our data structures and sample data
         ProductTree warehouse = new ProductTree();
+        CustomerHashTable customerDb = new CustomerHashTable(10);
 
-        // 2. Testprodukte einfügen
-        System.out.println("Inserting products into Binary Search Tree...");
+        // Pre-populating Data for Testing
         warehouse.insert(new Product(105, "Gaming Mouse", 49.99, 15));
         warehouse.insert(new Product(101, "Mechanical Keyboard", 89.99, 8));
         warehouse.insert(new Product(112, "WQHD Monitor", 299.00, 4));
         warehouse.insert(new Product(108, "USB-C Hub", 24.50, 22));
 
-        System.out.println("Insertion completed successfully!\n");
-
-        // --- MEILENSTEIN 2 TESTS ---
-        System.out.println("=== Testing M2: BST Lookup & Inorder ===");
-        int searchId = 108;
-        ProductNode foundNode = warehouse.lookup(searchId);
-
-        if (foundNode != null) {
-            System.out.println("[SUCCESS] Product found in tree: " + foundNode.getProduct());
-        } else {
-            System.out.println("[ERROR] Product with ID " + searchId + " does not exist.");
-        }
-
-        System.out.println("\nPrinting standard BST Inorder (Sorted by ID):");
-        warehouse.printInOrder();
-
-        // --- MEILENSTEIN 3 TEST: Sort Products by Price (Quicksort) ---
-        System.out.println("\n=== Testing M3: Sort Products by Price (Quicksort) ===");
-        Product[] productArray = warehouse.toArray();
-        warehouse.quickSortByPrice(productArray);
-
-        System.out.println("[SUCCESS] Products instantly sorted by price (Low to High):");
-        for (Product p : productArray) {
-            System.out.println(p);
-        }
-
-        // =========================================================================
-        // --- MEILENSTEIN 4 TEST: Customer Profile Management (Hash Table) ---
-        // =========================================================================
-        System.out.println("\n=== Testing Customer Hash Table (Division Method & Linear Probing) ===");
-
-        // Tabelle mit fixer Größe von 10 Slots initialisieren (m = 10)
-        CustomerHashTable customerDb = new CustomerHashTable(10);
-
-        System.out.println("Registering customers...");
         customerDb.put(new Customer(102, "Alice"));
         customerDb.put(new Customer(105, "Bob"));
-
-        // ID 202 provoziert eine Kollision: 202 % 10 = 2. Slot 2 ist besetzt durch Alice (102 % 10 = 2).
-        // Lineares Sondieren schiebt Charlie automatisch in Slot 3 vor!
-        System.out.println("Registering Charlie (ID 202) -> Should trigger collision resolution...");
         customerDb.put(new Customer(202, "Charlie"));
 
-        // Tabelle ausgeben, um die Indizes visuell zu prüfen
-        customerDb.printTable();
+        // 2. Continuous Loop-Driven Console UI
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
 
-        // Abruf trotz Kollision testen
-        System.out.println("\nVerifying Retrieval System:");
-        int targetCustomerId = 202;
-        Customer searched = customerDb.get(targetCustomerId);
+        System.out.println("=== Welcome to the SmartStore Warehouse Management System ===");
 
-        if (searched != null) {
-            System.out.println("[SUCCESS] Retrieved " + searched + " correctly bypassing hash conflicts!");
-        } else {
-            System.out.println("[ERROR] Failed to find Customer ID " + targetCustomerId);
+        while (running) {
+            System.out.println("\n------------------------------------------------");
+            System.out.println("Please select an option:");
+            System.out.println("1) Search for a Product (BST Lookup)");
+            System.out.println("2) Display All Products Sorted by Price (Quicksort)");
+            System.out.println("3) Search for a Customer Profile (Hash Table Lookup)");
+            System.out.println("4) Exit Program");
+            System.out.print("Your choice: ");
+
+            int choice = readSafeInteger(scanner);
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Product ID to look up: ");
+                    int pId = readSafeInteger(scanner);
+                    if (pId != -1) {
+                        ProductNode node = warehouse.lookup(pId);
+                        if (node != null) {
+                            System.out.println("[FOUND] " + node.getProduct());
+                        } else {
+                            System.out.println("[NOT FOUND] No product with ID " + pId);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    System.out.println("\nProcessing Quicksort...");
+                    Product[] array = warehouse.toArray();
+                    warehouse.quickSortByPrice(array);
+                    System.out.println("Products Sorted by Price (Low to High):");
+                    for (Product p : array) {
+                        System.out.println(" - " + p);
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Enter Customer ID to look up: ");
+                    int cId = readSafeInteger(scanner);
+                    if (cId != -1) {
+                        Customer customer = customerDb.get(cId);
+                        if (customer != null) {
+                            System.out.println("[FOUND] " + customer);
+                        } else {
+                            System.out.println("[NOT FOUND] No customer profile with ID " + cId);
+                        }
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Exiting SmartStore Simulation. Goodbye!");
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println("[WARNING] Invalid menu choice. Please select a number between 1 and 4.");
+                    break;
+            }
+        }
+        scanner.close();
+    }
+
+    /**
+     * Helper Method: Validates scanner inputs against InputMismatchExceptions (Letters instead of Numbers)
+     * as explicitly required by the M5 issue description.
+     */
+    private static int readSafeInteger(Scanner scanner) {
+        try {
+            int val = scanner.nextInt();
+            scanner.nextLine(); // Clear the dangling newline character buffer
+            return val;
+        } catch (InputMismatchException e) {
+            System.out.println("[INPUT ERROR] Invalid input format! You must enter a numeric ID number.");
+            scanner.nextLine(); // Completely clear the invalid text entry out of the scanner stream
+            return -1; // Return sentinel value signaling invalid input
         }
     }
 }
