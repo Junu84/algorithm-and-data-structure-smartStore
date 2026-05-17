@@ -30,5 +30,12 @@ public class Main {
         } else {
             System.out.println("\n[ERROR] Product with ID " + searchId + " does not exist in the warehouse.");
         }
+
+        // 4. Das Inorder-Traversal testen (Sortierte Ausgabe des Inventars)
+        System.out.println("\n=== Testing Inorder Traversal (Sorted Inventory) ===");
+        warehouse.printInOrder();
     }
+
+
+
 }
