@@ -18,17 +18,39 @@ public class Main {
 
         System.out.println("Insertion completed successfully!\n");
 
-        // 3. Den Such-Algorithmus testen (Exakt nach Folie 37!)
+        // --- MEILENSTEIN 2 TESTS (Keep them to ensure no regressions) ---
+        System.out.println("=== Testing M2: BST Lookup & Inorder ===");
         int searchId = 108;
-        System.out.println("Running Lookup Algorithm for Product ID: " + searchId);
-
         ProductNode foundNode = warehouse.lookup(searchId);
 
         if (foundNode != null) {
-            System.out.println("\n[SUCCESS] Product found in tree:");
-            System.out.println(foundNode.getProduct());
+            System.out.println("[SUCCESS] Product found in tree: " + foundNode.getProduct());
         } else {
-            System.out.println("\n[ERROR] Product with ID " + searchId + " does not exist in the warehouse.");
+            System.out.println("[ERROR] Product with ID " + searchId + " does not exist.");
+        }
+
+        System.out.println("\nPrinting standard BST Inorder (Sorted by ID):");
+        warehouse.printInOrder();
+
+
+        // =========================================================================
+        // --- MEILENSTEIN 3 TEST: Sort Products by Price (Quicksort) ---
+        // =========================================================================
+        System.out.println("\n=== Testing M3: Sort Products by Price (Quicksort) ===");
+
+        // 1. Mirror tree elements into a temporary array
+        System.out.println("Mirroring BST nodes into a flat array...");
+        Product[] productArray = warehouse.toArray();
+
+        // 2. Run the in-place partitioning Quicksort algorithm
+        System.out.println("Executing Quicksort by price...");
+        warehouse.quickSortByPrice(productArray);
+
+        // 3. Print the sorted array to verify success
+        System.out.println("\n[SUCCESS] Products instantly sorted by price (Low to High):");
+        for (Product p : productArray) {
+            System.out.println(p);
+            // This will automatically invoke the formatted toString() method from Product.java
         }
     }
 }
