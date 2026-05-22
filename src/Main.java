@@ -11,7 +11,7 @@ public class Main {
         System.out.println("=== SmartStore Warehouse Simulation - Sprint 1 (Validation) ===");
 
         // 1. Baum-Instanz erstellen
-        // Create the product tree used as the warehouse storage.
+        //  Creates the product tree used as the warehouse storage.
         // Products are stored by their product ID using BST rules.
         ProductTree warehouse = new ProductTree();
 
@@ -93,7 +93,7 @@ public class Main {
 
         System.out.println("\n=== Testing S2: Duplicate Customer ID ===");
         // S2 test: Try to insert a customer with an already existing ID.
-// Expected result: insertion is rejected and the original customer is not overwritten.
+        // Expected result: insertion is rejected and the original customer is not overwritten.
         customerDb.put(new Customer(102, "Duplicate Alice"));
 
 
@@ -108,5 +108,26 @@ public class Main {
         } else {
             System.out.println("[ERROR] Failed to find Customer ID " + targetCustomerId);
         }
+
+
+        System.out.println("\n=== Testing C2: Dynamic Resizing & Rehashing ===");
+
+        CustomerHashTable testTable = new CustomerHashTable(4);
+
+        testTable.put(new Customer(1, "Customer A"));
+        testTable.put(new Customer(2, "Customer B"));
+        testTable.put(new Customer(3, "Customer C")); // 3/4 = 0.75 -> resize should happen
+
+        testTable.printTable();
+
+        Customer found = testTable.get(2);
+        if (found != null) {
+            System.out.println("[SUCCESS] Customer still found after rehashing: " + found);
+        } else {
+            System.out.println("[ERROR] Customer not found after rehashing.");
+        }
     }
+
+
+
 }

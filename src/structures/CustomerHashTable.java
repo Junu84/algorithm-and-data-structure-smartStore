@@ -14,10 +14,12 @@ import model.Customer;
 public class CustomerHashTable {
     private Customer[] table;
     private int size; // This is 'm' from your lecture
+    private int count;
 
     public CustomerHashTable(int capacity) {
         this.size = capacity;
         this.table = new Customer[capacity];
+        this.count = 0;
     }
 
     // --- The Hashing Function: h(k) = k mod m ---
@@ -34,6 +36,26 @@ public class CustomerHashTable {
     private int hash(int key) {
         return key % size;
     }
+
+    private double getLoadFactor() {
+        return (double) count / size;
+    }
+
+    private void resize() {
+        Customer[] oldTable = table;
+
+        size = size*2;
+        table = new Customer[size];
+        count = 0;
+
+        for (Customer customer : oldTable) {
+            if (customer != null) {
+                put(customer);
+            }
+        }
+        System.out.println("[REHASH] Customer table resized to " + size);
+    }
+
 
     // --- Insert a Customer using Linear Probing ---
     /**
@@ -69,6 +91,10 @@ public class CustomerHashTable {
         }
 
         table[index] = customer; // Found an empty slot!
+        count++;
+        if (getLoadFactor() >= 0.7) {
+            resize();
+        }
     }
 
     // --- Retrieve a Customer using Linear Probing ---
@@ -113,4 +139,7 @@ public class CustomerHashTable {
             }
         }
     }
+
+
+
 }
