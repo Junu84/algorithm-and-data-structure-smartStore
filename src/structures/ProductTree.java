@@ -1,7 +1,15 @@
 package structures;
 
 import model.Product;
-
+/**
+ * Binary Search Tree for storing products by their unique product ID.
+ *
+ * Used algorithms / data structures:
+ * - Binary Search Tree insertion
+ * - Recursive lookup
+ * - Inorder traversal
+ * - Quicksort for sorting products by price
+ */
 public class ProductTree {
     private ProductNode root;
 
@@ -10,6 +18,17 @@ public class ProductTree {
     }
 
     // --- MEILENSTEIN 2: BST Lookup ---
+
+    /**
+     * Searches for a product node by product ID.
+     *
+     * BST rule:
+     * - smaller IDs are searched in the left subtree
+     * - larger IDs are searched in the right subtree
+     *
+     * @param targetId product ID to search for
+     * @return matching ProductNode or null if not found
+     */
     public ProductNode lookup(int targetId) {
         return lookup(this.root, targetId);
     }
@@ -26,6 +45,14 @@ public class ProductTree {
     }
 
     // --- MEILENSTEIN 2: Inorder Traversal ---
+
+
+    /**
+     * Prints all products in ascending order by product ID.
+     *
+     * Inorder traversal visits:
+     * left subtree -> current node -> right subtree.
+     */
     public void printInOrder() {
         printInOrder(this.root);
     }
@@ -38,6 +65,18 @@ public class ProductTree {
         }
     }
 
+
+    /**
+     * Inserts a product into the BST.
+     *
+     * Before insertion:
+     * - invalid products are rejected
+     * - duplicate product IDs are rejected
+     *
+     * This protects the tree from invalid data and duplicate keys.
+     *
+     * @param product product to insert
+     */
     // Hilfsmethode zum Einfügen aus M2
     public void insert(Product product) {
         if (product == null || product.getName().contains("[INVALID]")) {
@@ -92,6 +131,15 @@ public class ProductTree {
         }
     }
 
+
+    /**
+     * Sorts the given product array by price using Quicksort.
+     *
+     * Quicksort recursively partitions the array around a pivot element.
+     *
+     * @param array product array to sort
+     */
+
     // 3. Der Quicksort-Algorithmus (In-place Partitionierung nach Preis)
     public void quickSortByPrice(Product[] array) {
         if (array == null || array.length == 0) return;
@@ -107,7 +155,17 @@ public class ProductTree {
     }
 
 
-
+    /**
+     * Partitions the array around the pivot price.
+     *
+     * Products with price <= pivot are moved to the left side.
+     * Products with price > pivot remain on the right side.
+     *
+     * @param array product array
+     * @param low start index
+     * @param high end index, also used as pivot position
+     * @return final pivot index
+     */
     private int partition(Product[] array, int low, int high) {
         double pivotPrice = array[high].getPrice();
         int i = (low - 1);

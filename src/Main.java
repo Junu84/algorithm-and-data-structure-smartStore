@@ -4,12 +4,17 @@ import structures.ProductTree;
 import structures.ProductNode;
 import structures.CustomerHashTable;
 
+
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("=== SmartStore Warehouse Simulation - Sprint 1 (Validation) ===");
 
         // 1. Baum-Instanz erstellen
+        // Create the product tree used as the warehouse storage.
+        // Products are stored by their product ID using BST rules.
         ProductTree warehouse = new ProductTree();
+
 
         // 2. Testprodukte einfügen (Valid Products)
         System.out.println("\n--- Inserting Valid Products ---");
@@ -19,8 +24,9 @@ public class Main {
         warehouse.insert(new Product(108, "USB-C Hub", 24.50, 22));
 
         System.out.println("\n=== Testing S2: Duplicate Product ID ===");
+        // S2 test: Try to insert a product with an already existing ID.
+        // Expected result: insertion is rejected and the original product remains unchanged.
         warehouse.insert(new Product(105, "Duplicate Gaming Mouse", 19.99, 3));
-
 
 
         // =========================================================================
@@ -74,6 +80,8 @@ public class Main {
         // =========================================================================
         System.out.println("\n=== Testing Customer Hash Table (Division Method & Linear Probing) ===");
 
+        // Create a customer hash table with capacity 10.
+        // Customer IDs are mapped to array positions using the division method.
         CustomerHashTable customerDb = new CustomerHashTable(10);
 
         System.out.println("Registering customers...");
@@ -84,6 +92,8 @@ public class Main {
         customerDb.put(new Customer(202, "Charlie"));
 
         System.out.println("\n=== Testing S2: Duplicate Customer ID ===");
+        // S2 test: Try to insert a customer with an already existing ID.
+// Expected result: insertion is rejected and the original customer is not overwritten.
         customerDb.put(new Customer(102, "Duplicate Alice"));
 
 
