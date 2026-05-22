@@ -140,6 +140,8 @@ public class CustomerHashTable {
         }
     }
 
-
+    public int getCustomerCount() {
+        return count;
+    }
 
 }

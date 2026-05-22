@@ -151,8 +151,7 @@ public class ProductTree {
         if (current == null) return new ProductNode(product);
         if (product.getId() < current.getId()) {
             current.setLeft(insertRecursive(current.getLeft(), product));
-        } else if (product.getId() > current.getId()) {
-            current.setRight(insertRecursive(current.getRight(), product));
+        } else if (product.getId() > current.getId()) {current.setRight(insertRecursive(current.getRight(), product));
         }
         return current;
     }
@@ -239,6 +238,21 @@ public class ProductTree {
         array[high] = temp;
 
         return i + 1;
+    }
+
+    public double calculateTotalWarehouseValue() {
+        return calculateTotalWarehouseValue(this.root);
+    }
+
+    private double calculateTotalWarehouseValue(ProductNode node) {
+        if (node == null) return 0;
+
+        Product product = node.getProduct();
+        double currentValue = product.getPrice() * product.getQuantity();
+
+        return currentValue
+                + calculateTotalWarehouseValue(node.getLeft())
+                + calculateTotalWarehouseValue(node.getRight());
     }
 
 }

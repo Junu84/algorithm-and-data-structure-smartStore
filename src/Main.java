@@ -10,6 +10,12 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("=== SmartStore Warehouse Simulation - Sprint 1 (Validation) ===");
 
+
+        System.out.println("=================================");
+        System.out.println("      SMART STORE SYSTEM");
+        System.out.println("=================================");
+
+
         // 1. Baum-Instanz erstellen
         //  Creates the product tree used as the warehouse storage.
         // Products are stored by their product ID using BST rules.
@@ -126,6 +132,11 @@ public class Main {
         } else {
             System.out.println("[ERROR] Customer not found after rehashing.");
         }
+
+
+        System.out.println("\n=== C3: Analytics Dashboard ===");
+        System.out.println("Total warehouse value: " + warehouse.calculateTotalWarehouseValue() + " EUR");
+        System.out.println("Registered customers: " + customerDb.getCustomerCount());
     }
 
 
