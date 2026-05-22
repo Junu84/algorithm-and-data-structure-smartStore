@@ -40,6 +40,16 @@ public class ProductTree {
 
     // Hilfsmethode zum Einfügen aus M2
     public void insert(Product product) {
+        if (product == null || product.getName().contains("[INVALID]")) {
+            System.out.println("[BST REJECT] Insertion skipped because the product attributes are invalid.");
+            return;
+        }
+
+        if (lookup(product.getId()) != null) {
+            System.out.println("[BST WARNING] Product ID " + product.getId() + " already exists. Insertion skipped.");
+            return;
+        }
+
         this.root = insertRecursive(this.root, product);
     }
 
@@ -96,6 +106,8 @@ public class ProductTree {
         }
     }
 
+
+
     private int partition(Product[] array, int low, int high) {
         double pivotPrice = array[high].getPrice();
         int i = (low - 1);
@@ -115,4 +127,5 @@ public class ProductTree {
 
         return i + 1;
     }
+
 }
