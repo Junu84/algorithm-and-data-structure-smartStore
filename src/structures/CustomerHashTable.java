@@ -27,12 +27,12 @@ public class CustomerHashTable {
         // Linear Probing: Look for an empty slot or update matching ID
         while (table[index] != null) {
             if (table[index].getId() == key) {
-                table[index] = customer; // Update existing profile
+                System.out.println("[HASH WARNING] Customer ID " + key + " already exists. Insertion skipped.");
                 return;
             }
             index = (index + 1) % size; // Move to the next index (circular array boundary)
 
-            // Guard: Table is completely full
+            // Guard: the Table is completely full
             if (index == startIndex) {
                 System.out.println("[ERROR] Hash Table is full! Could not insert customer: " + customer.getName());
                 return;
@@ -53,7 +53,7 @@ public class CustomerHashTable {
             }
             index = (index + 1) % size; // Continue linear probing search
 
-            if (index == startIndex) break; // Traversed whole table
+            if (index == startIndex) break; // Traversed the whole table
         }
 
         return null; // Customer not found

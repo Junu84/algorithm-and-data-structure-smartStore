@@ -18,6 +18,11 @@ public class Main {
         warehouse.insert(new Product(112, "WQHD Monitor", 299.00, 4));
         warehouse.insert(new Product(108, "USB-C Hub", 24.50, 22));
 
+        System.out.println("\n=== Testing S2: Duplicate Product ID ===");
+        warehouse.insert(new Product(105, "Duplicate Gaming Mouse", 19.99, 3));
+
+
+
         // =========================================================================
         // --- SPRINT 1 CORE TEST: Rejecting Invalid Attributes ---
         // =========================================================================
@@ -77,6 +82,10 @@ public class Main {
 
         System.out.println("Registering Charlie (ID 202) -> Should trigger collision resolution...");
         customerDb.put(new Customer(202, "Charlie"));
+
+        System.out.println("\n=== Testing S2: Duplicate Customer ID ===");
+        customerDb.put(new Customer(102, "Duplicate Alice"));
+
 
         customerDb.printTable();
 
