@@ -7,7 +7,7 @@ import model.Product;
  * Used algorithms / data structures:
  * - Binary Search Tree insertion
  * - Recursive lookup
- * - Inorder traversal
+ * - In order traversal
  * - Quicksort for sorting products by price
  */
 public class ProductTree {
@@ -90,6 +90,61 @@ public class ProductTree {
         }
 
         this.root = insertRecursive(this.root, product);
+    }
+
+
+    // =========================================================================
+// --- C1: Inventory Transaction Simulation (Sell / Restock Stock) ---
+// =========================================================================
+
+    public void sellProduct(int productId, int quantity) {
+        ProductNode node = lookup(productId);
+
+        if (node == null) {
+            System.out.println("[SELL ERROR] Product ID " + productId + " does not exist.");
+            return;
+        }
+
+        if (quantity <= 0) {
+            System.out.println("[SELL ERROR] Quantity must be greater than 0.");
+            return;
+        }
+
+        Product product = node.getProduct();
+
+        if (quantity > product.getQuantity()) {
+            System.out.println("[SELL ERROR] Not enough stock for product ID " + productId + ".");
+            return;
+        }
+
+        product.setQuantity(product.getQuantity() - quantity);
+
+        System.out.println("[SELL SUCCESS] Sold " + quantity + " unit(s) of " + product.getName()
+                + ". New stock: " + product.getQuantity());
+
+        if (product.getQuantity() == 0) {
+            System.out.println("[LOW INVENTORY WARNING] Product ID " + productId + " is out of stock.");
+        }
+    }
+
+    public void restockProduct(int productId, int quantity) {
+        ProductNode node = lookup(productId);
+
+        if (node == null) {
+            System.out.println("[RESTOCK ERROR] Product ID " + productId + " does not exist.");
+            return;
+        }
+
+        if (quantity <= 0) {
+            System.out.println("[RESTOCK ERROR] Quantity must be greater than 0.");
+            return;
+        }
+
+        Product product = node.getProduct();
+        product.setQuantity(product.getQuantity() + quantity);
+
+        System.out.println("[RESTOCK SUCCESS] Added " + quantity + " unit(s) to " + product.getName()
+                + ". New stock: " + product.getQuantity());
     }
 
     private ProductNode insertRecursive(ProductNode current, Product product) {

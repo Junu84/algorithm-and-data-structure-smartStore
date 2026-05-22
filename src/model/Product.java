@@ -44,6 +44,14 @@ public class Product {
         return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        if (quantity < 0) {
+            System.out.println("[VALIDATION ERROR] Quantity cannot be negative.");
+            return;
+        }
+        this.quantity = quantity;
+    }
+
     // Schöne Formatierung für System.out.println() in der Konsole
     @Override
     public String toString() {
